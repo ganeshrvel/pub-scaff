@@ -6,7 +6,7 @@ import 'package:meta/meta.dart';
 class Generator {
   final String cwd;
   final String copyToDirPath;
-  final List<Map<String, String>> scaffoldVariables;
+  final Map<String, String> scaffoldVariables;
 
   Generator({
     @required this.cwd,

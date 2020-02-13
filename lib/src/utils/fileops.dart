@@ -1,8 +1,9 @@
 import 'dart:io';
 import 'package:path/path.dart' as path;
+import 'package:mustache/mustache.dart';
 
 void copyTemplatifiedDirectory(Directory source, Directory destination,
-    List<Map<String, String>> scaffoldVariables) {
+    Map<String, String> scaffoldVariables) {
   source.listSync(recursive: false).forEach((var sourceEntity) {
     if (sourceEntity is Directory) {
       var destinationPath = getTemplatifiedDirectoryPath(
@@ -13,13 +14,12 @@ void copyTemplatifiedDirectory(Directory source, Directory destination,
         sourceEntity.path,
         scaffoldVariables,
       );
-
-      var newDirectory = Directory(
-        path.join(
-          destinationPath,
-          path.basename(sourceEntityPath),
-        ),
+      var filePath = path.join(
+        destinationPath,
+        path.basename(sourceEntityPath),
       );
+
+      var newDirectory = Directory(filePath);
 
       newDirectory.createSync();
 
@@ -37,31 +37,43 @@ void copyTemplatifiedDirectory(Directory source, Directory destination,
         sourceEntity.path,
         scaffoldVariables,
       );
+      var filePath =
+          path.join(destinationPath, path.basename(sourceEntityPath));
 
-      sourceEntity.copySync(
-        path.join(destinationPath, path.basename(sourceEntityPath)),
-      );
+      sourceEntity.copySync(filePath);
+
+      processTemplateFiles(filePath, scaffoldVariables);
     }
   });
 }
 
 String getTemplatifiedDirectoryPath(
-  String path,
-  List<Map<String, String>> scaffoldVariables,
-) {
-  var _return = path;
+    String path, Map<String, String> scaffoldVariables) {
+  var _path = path;
 
-  scaffoldVariables.forEach((a) {
-    var key = a.keys.toList()[0];
-    var value = a.values.toList()[0];
-
+  scaffoldVariables.forEach((key, value) {
     if (path.contains('{{${key}}}')) {
-      _return = _return.replaceAll(
+      _path = _path.replaceAll(
         '{{${key}}}',
         value,
       );
     }
   });
 
-  return _return;
+  return _path;
+}
+
+void processTemplateFiles(
+    String filePath, Map<String, String> scaffoldVariables) {
+  var fileContents = File(filePath).readAsStringSync();
+
+  var template = Template(fileContents);
+
+  var output = template.renderString(scaffoldVariables);
+
+  try {
+    File(filePath).writeAsStringSync(output);
+  } catch (e) {
+    rethrow;
+  }
 }

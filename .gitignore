@@ -11,3 +11,4 @@ build/
 doc/api/
 resources
 .idea
+run/temp/*

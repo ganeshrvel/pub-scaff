@@ -6,9 +6,7 @@ void main() {
   final cwd = Directory.current.path;
   final copyFromDirPath = path.join(cwd, 'mocks');
   final copyToDirPath = path.join(cwd, 'temp');
-  final scaffoldVariables = [
-    {'page': 'demo'}
-  ];
+  final scaffoldVariables = {'page': 'Demo', 'title': 'AppDemo'};
 
   final generator = Generator(
     cwd: copyFromDirPath,
