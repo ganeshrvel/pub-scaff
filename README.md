@@ -1,15 +1,20 @@
-# pub: scaff
+# pub-scaff
 
 - Author: [Ganesh Rathinavel](https://www.linkedin.com/in/ganeshrvel "Ganesh Rathinavel")
 - License: [MIT](https://github.com/ganeshrvel/openmtp/blob/master/LICENSE "MIT")
-- Website URL: [https://github.com/ganeshrvel/pub-scaff](https://github.com/ganeshrvel/pub-scaff/ "https://github.com/ganeshrvel/pub-scaff")
+- Package URL: [https://pub.dev/packages/scaff](https://pub.dev/packages/scaff "https://pub.dev/packages/scaff")
 - Repo URL: [https://github.com/ganeshrvel/pub-scaff](https://github.com/ganeshrvel/pub-scaff/ "https://github.com/ganeshrvel/pub-scaff")
 - Contacts: ganeshrvel@outlook.com
 
 
 ### Introduction
 
-##### Command line utility for generating Dart and Flutter components.
+##### Scaffold Generator for Dart and Flutter.
+
+**scaff** is a simple command-line utility for generating Dart and Flutter components from template files.
+It is a very tedious job to keep replicating the boilerplate codes every time you try to add a new component in your app. Using scaff, you can generate dart or flutter components from the custom-defined templates. You can even add template schemes to the component directories and files for easy and flexible scaffolding.
+
+**scaff** uses 'Mustache templating library' for defining and processing the template files.
 
 
 ## Installation
@@ -18,17 +23,127 @@
 $ pub global activate scaff
 ```
 
-## Usage
+## Usage Example
+Let us create a simple component. First of all, we need to create a working directory and it should contain a scaff.setup.json file. The scaff.setup.json file should contain all the template variables used in that working directory.
+Add the other subdirectories and template files into the working directory. 
+
+All template files should have a .tpl extension. The files and directories name may contain template variables as well.
+
+Template variable examples: {{var1}}, {{className}}Base, {{fileName}}_store
+
+The example template directory structure:
+```
+component_templates
+│   └── general_store_architecture
+│       ├── scaff.setup.json
+│       └── {{componentName}}
+│           ├── {{componentName}}.tpl
+│           └── {{componentName}}_store.tpl
+```
+
+1) Create a new directory in the project root
+
 ```shell
-$ cd component_template
+$ mkdir -p component_templates
+$ cd component_templates/general_store_architecture
+```
+
+2) Create the component directory
+
+```shell
+$ mkdir {{componentName}}
+$ cd {{componentName}}
+```
+
+3) Create the component template file
+
+```shell
+$ touch {{componentName}}.tpl
+```
+
+4) Add the code to {{componentName}}.tpl file
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../data/mobx/{{componentName}}_store.dart';
+
+class {{className}}Screen extends StatelessWidget {
+  {{className}}Screen({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final {{componentName}} = Provider.of<{{className}}Store>(context);
+
+    return Scaffold(
+      body: Center(
+        child: Column(),
+      ),
+    );
+  }
+}
+```
+
+5) Create the store template file
+
+```shell
+$ touch {{componentName}}_store.tpl
+```
+
+6) Add the code to {{componentName}}_store.tpl file
+
+```dart
+import 'package:mobx/mobx.dart';
+
+abstract class {{className}}StoreBase with Store {
+  @observable
+  bool dummyValue = false;
+}
+```
+
+7) Create the *scaff.setup.json* file
+
+```shell
+$ cd ..
+$ touch scaff.setup.json
+```
+
+8) Add all the template variables used in the working directory to scaff.setup.json file as
+
+```json
+{
+	"variables": ["componentName", "className"]
+}
+```
+
+9) cd into general_store_architecture folder.
+
+```shell
+$ pwd # it should be pointing to =>  /path/component_templates/general_store_architecture
+```
+
+10) Run scaff globally
+
+```shell
 $ pub global run scaff
 ```
 
+11) You will be prompted to:
+```shell
+- Enter source directory (/path/component_templates/general_store_architecture) »
+- Enter destination directory (/path/component_templates/general_store_architecture/__component__) »
+- Enter 'componentName' variable value » login
+- Enter 'className' variable value » Login
+```
+
+12) Navigate to the destination directory will have the newly generated component.
 
 ## Building from Source
 
 Requirements: [Dart](https://dart.dev/get-dart "Install Dart") and [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git "Install Git")
-
 
 ### Clone
 ```shell
