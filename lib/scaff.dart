@@ -1,3 +1,3 @@
-library dart_scaffold;
+library scaff;
 
 export 'src/main.dart';
