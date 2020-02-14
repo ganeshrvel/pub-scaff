@@ -9,24 +9,26 @@ class Generator {
   final String destinationDirPath;
   final Map<String, String> scaffoldVariables;
   final String tplExtension;
+  final String setupConfigFile;
 
-  final List<String> filesSkipList;
+  final List<String> filesSkipList = [];
 
-  Generator(
-    this.filesSkipList, {
+  Generator({
     @required this.sourceDirPath,
     @required this.destinationDirPath,
     @required this.scaffoldVariables,
     @required this.tplExtension,
-  });
+    @required this.setupConfigFile,
+  }) {
+    filesSkipList.add(setupConfigFile);
+  }
 
   void init() {
     final _destinationDirPath = Directory(destinationDirPath);
 
-    /*if (!_destinationDirPath.existsSync()) {
-      print("aaaaaa");
-     // _destinationDirPath.createSync();
-    }*/
+    if (!_destinationDirPath.existsSync()) {
+      _destinationDirPath.createSync(recursive: true);
+    }
 
     copyTemplatifiedDirectory(
       Directory(sourceDirPath),
@@ -38,44 +40,47 @@ class Generator {
     Directory source,
     Directory destination,
   ) {
-    source.listSync(recursive: false).forEach((var sourceEntity) {
-      if (sourceEntity is Directory) {
-        final destinationPath = getTemplatifiedDirectoryPath(
-          destination.absolute.path,
-          scaffoldVariables,
-        );
-        final sourceEntityPath = getTemplatifiedDirectoryPath(
-          sourceEntity.path,
-          scaffoldVariables,
-        );
-        final filePath = path.join(
-          destinationPath,
-          path.basename(sourceEntityPath),
-        );
+    source.listSync(recursive: false).forEach((final sourceEntity) {
+      // prevent recursive creation of the destination dir
+      if (sourceEntity.absolute.path != destination.absolute.path) {
+        if (sourceEntity is Directory) {
+          final destinationPath = getTemplatifiedDirectoryPath(
+            destination.absolute.path,
+            scaffoldVariables,
+          );
+          final sourceEntityPath = getTemplatifiedDirectoryPath(
+            sourceEntity.path,
+            scaffoldVariables,
+          );
+          final filePath = path.join(
+            destinationPath,
+            path.basename(sourceEntityPath),
+          );
 
-        final newDirectory = Directory(filePath);
+          final newDirectory = Directory(filePath);
 
-        newDirectory.createSync();
+          newDirectory.createSync();
 
-        copyTemplatifiedDirectory(
-          sourceEntity.absolute,
-          newDirectory,
-        );
-      } else if (sourceEntity is File) {
-        final destinationPath = getTemplatifiedDirectoryPath(
-          destination.path,
-          scaffoldVariables,
-        );
-        final sourceEntityPath = getTemplatifiedDirectoryPath(
-          sourceEntity.path,
-          scaffoldVariables,
-        );
-        final filePath =
-            path.join(destinationPath, path.basename(sourceEntityPath));
+          copyTemplatifiedDirectory(
+            sourceEntity.absolute,
+            newDirectory,
+          );
+        } else if (sourceEntity is File) {
+          final destinationPath = getTemplatifiedDirectoryPath(
+            destination.path,
+            scaffoldVariables,
+          );
+          final sourceEntityPath = getTemplatifiedDirectoryPath(
+            sourceEntity.path,
+            scaffoldVariables,
+          );
+          final filePath =
+              path.join(destinationPath, path.basename(sourceEntityPath));
 
-        sourceEntity.copySync(filePath);
+          sourceEntity.copySync(filePath);
 
-        processTemplateFiles(filePath);
+          processTemplateFiles(filePath);
+        }
       }
     });
   }

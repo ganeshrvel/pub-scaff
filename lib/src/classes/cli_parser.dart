@@ -3,11 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:path/path.dart' as path;
-import 'package:io/ansi.dart';
 import 'package:meta/meta.dart';
 import 'package:prompts/prompts.dart' as prompts;
-
-import '../constants.dart';
 
 class CliStream {
   String sourceDirPath;
@@ -24,27 +21,28 @@ class CliStream {
 class CliParser {
   final String cwd;
   final String destPath;
+  final String setupConfigFile;
 
   CliParser({
     @required this.cwd,
     @required this.destPath,
+    @required this.setupConfigFile,
   });
 
   Future<CliStream> getCliStream() async {
     var sourceDir = prompts.get('Enter source directory', defaultsTo: cwd);
     var destinationDirPath =
-        prompts.get('Enter destination directory', defaultsTo: this.destPath);
+        prompts.get('Enter destination directory', defaultsTo: destPath);
 
-    final setupFile =
-        await File(path.join(cwd /*sourceDir*/, SETUP_CONFIG_FILE));
+    final setupFile = await File(path.join(sourceDir, setupConfigFile));
     if (!setupFile.existsSync()) {
-      throw '${SETUP_CONFIG_FILE} was not found inside the source directory.';
+      throw '${setupConfigFile} was not found inside the source directory.';
     }
 
     final setupJson = jsonDecode(setupFile.readAsStringSync());
 
     if (setupJson['variables'] == null) {
-      throw "'variables' list not found inside ${SETUP_CONFIG_FILE}";
+      throw "'variables' list not found inside ${setupConfigFile}";
     }
 
     final setupFileScaffoldVars = setupJson['variables'];
