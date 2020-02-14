@@ -139,7 +139,14 @@ $ pub global run scaff
 - Enter 'className' variable value » Login
 ```
 
-12) Navigate to the destination directory will have the newly generated component.
+12) The destination directory will have the newly generated component.
+The destination directory structure:
+
+```
+└── login
+    ├── login.dart
+    └── login_store.dart
+```
 
 ## Building from Source
 

@@ -15,7 +15,7 @@ class Generator {
   final Map<String, String> scaffoldVariables;
   final String tplExtension;
   final String setupConfigFilePath;
-  final List<String> filesSkipList = [];
+  final List<String> filesSkipList = ['.DS_Store'];
 
   Generator({
     @required this.sourceDirPath,
@@ -76,6 +76,7 @@ class Generator {
             newDirectory,
           );
         }
+
         /// File copying logic
         else if (sourceEntity is File) {
           final destinationPath = getTemplateStrippedPath(
@@ -87,11 +88,18 @@ class Generator {
             scaffoldVariables,
           );
 
-          final fileName = replaceExtension(
-            sourceEntityPath,
+          var isTplFile = isFileExtensionMatch(
+            path.basename(sourceEntityPath),
             tplExtension,
-            'dart',
           );
+
+          final fileName = isTplFile
+              ? replaceExtension(
+                  sourceEntityPath,
+                  tplExtension,
+                  'dart',
+                )
+              : sourceEntityPath;
 
           final filePath = path.join(
             destinationPath,
@@ -100,7 +108,9 @@ class Generator {
 
           sourceEntity.copySync(filePath);
 
-          processTemplateFiles(filePath);
+          if (isTplFile) {
+            processTemplateFiles(filePath);
+          }
         }
       }
     });

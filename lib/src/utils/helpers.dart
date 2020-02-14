@@ -16,15 +16,19 @@ String getTemplateStrippedPath(
   return _path;
 }
 
-String replaceExtension(String file, String searchExt, String replaceExt) {
-  final _file = file.split('.');
+bool isFileExtensionMatch(String fileName, String extension) {
+  final _fileName = fileName.split('.');
 
-  var newFile = file;
-  if (_file[_file.length - 1] == searchExt) {
-    _file.removeAt(_file.length - 1);
+  return _fileName.last == extension;
+}
 
-    newFile = '${_file.join(".")}.${replaceExt}';
-  }
+String replaceExtension(String fileName, String searchExt, String replaceExt) {
+  final _fileName = fileName.split('.');
+  var newFileName = fileName;
 
-  return newFile;
+  _fileName.removeAt(_fileName.length - 1);
+
+  newFileName = '${_fileName.join(".")}.${replaceExt}';
+
+  return newFileName;
 }

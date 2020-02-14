@@ -1,7 +1,12 @@
-## 1.0.0
+## 1.0.2
 
-- Initial version
+- Bug fixes
+- Optimizations
 
 ## 1.0.1
 
 - Fixed the global executable path
+
+## 1.0.0
+
+- Initial version
