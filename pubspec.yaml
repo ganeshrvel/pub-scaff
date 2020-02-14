@@ -10,6 +10,7 @@ dependencies:
   path: ^1.6.0
   args: ^1.5.2
   mustache: ^1.1.1
+  prompts: ^1.3.1
 
 dev_dependencies:
   pedantic: ^1.8.0

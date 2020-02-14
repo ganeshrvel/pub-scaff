@@ -5,22 +5,22 @@ import 'package:mustache/mustache.dart';
 import 'package:meta/meta.dart';
 
 class Generator {
-  final String cwd;
-  final String copyToDirPath;
+  final String sourceDirPath;
+  final String destinationDirPath;
   final Map<String, String> scaffoldVariables;
   final String tplExtension;
 
   Generator({
-    @required this.cwd,
-    @required this.copyToDirPath,
+    @required this.sourceDirPath,
+    @required this.destinationDirPath,
     @required this.scaffoldVariables,
     @required this.tplExtension,
   });
 
   void init() {
     copyTemplatifiedDirectory(
-      Directory(cwd),
-      Directory(copyToDirPath),
+      Directory(sourceDirPath),
+      Directory(destinationDirPath),
     );
   }
 
