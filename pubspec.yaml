@@ -1,7 +1,7 @@
 name: scaff
 description: Scaffold Generator for Dart and Flutter.
 # version: 1.0.0
-# homepage: https://www.example.com
+# homepage: https://github.com/ganeshrvel/pub-scaff
 
 environment:
   sdk: '>=2.7.0 <3.0.0'
