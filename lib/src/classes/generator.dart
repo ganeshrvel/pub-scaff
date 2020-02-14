@@ -46,11 +46,11 @@ class Generator {
       if (sourceEntity.absolute.path != destination.absolute.path &&
           path.join(sourceDirPath, setupConfigFile) != sourceEntity.path) {
         if (sourceEntity is Directory) {
-          final destinationPath = getTemplatifiedDirectoryPath(
+          final destinationPath = getTemplateStrippedPath(
             destination.absolute.path,
             scaffoldVariables,
           );
-          final sourceEntityPath = getTemplatifiedDirectoryPath(
+          final sourceEntityPath = getTemplateStrippedPath(
             sourceEntity.path,
             scaffoldVariables,
           );
@@ -68,16 +68,25 @@ class Generator {
             newDirectory,
           );
         } else if (sourceEntity is File) {
-          final destinationPath = getTemplatifiedDirectoryPath(
+          final destinationPath = getTemplateStrippedPath(
             destination.path,
             scaffoldVariables,
           );
-          final sourceEntityPath = getTemplatifiedDirectoryPath(
+          final sourceEntityPath = getTemplateStrippedPath(
             sourceEntity.path,
             scaffoldVariables,
           );
-          final filePath =
-              path.join(destinationPath, path.basename(sourceEntityPath));
+
+          final fileName = replaceExtension(
+            sourceEntityPath,
+            tplExtension,
+            'dart',
+          );
+
+          final filePath = path.join(
+            destinationPath,
+            path.basename(fileName),
+          );
 
           sourceEntity.copySync(filePath);
 

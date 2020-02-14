@@ -50,7 +50,7 @@ class CliParser {
     final scaffoldVarMap = HashMap<String, String>();
 
     for (final e in setupFileScaffoldVars) {
-      final varValue = prompts.get('Enter ${e} variable value');
+      final varValue = prompts.get("Enter '${e}' variable value");
 
       scaffoldVarMap.putIfAbsent(e, () => varValue);
     }

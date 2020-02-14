@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:path/path.dart' as path;
@@ -7,11 +6,8 @@ import 'package:dart_scaffold/src/classes/generator.dart';
 import 'package:dart_scaffold/src/constants.dart';
 
 Future<void> main() async {
-  // @todo rename files to dart
-  // @todo check if source directory exists
-
   final cwd = Directory.current.path;
-  final destinationDirPath = path.join(cwd, '__component__');
+  final destinationDirPath = path.join(cwd, TEMP_DESTINATION_DIRECTORY);
   final tplExtension = TPL_FILES_EXTENSION;
   final setupConfigFile = SETUP_CONFIG_FILE;
 

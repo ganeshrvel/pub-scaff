@@ -12,4 +12,4 @@ doc/api/
 resources
 .idea
 run/temp/*
-run/mocks/login_component/__components__
+__component__
