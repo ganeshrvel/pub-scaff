@@ -11,5 +11,5 @@ build/
 doc/api/
 resources
 .idea
-run/temp/*
+component_templates/temp/*
 __component__
