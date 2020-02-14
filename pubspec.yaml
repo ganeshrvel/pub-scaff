@@ -1,8 +1,7 @@
 name: scaff
-description: Scaffold Generator for Dart and Flutter.
-version: 1.0.1
+description: scaff (scaffold generator) is a simple command-line based utility for generating Dart and Flutter components from template files.
+version: 1.0.2
 homepage: https://github.com/ganeshrvel/pub-scaff
-
 
 environment:
   sdk: '>=2.7.0 <3.0.0'

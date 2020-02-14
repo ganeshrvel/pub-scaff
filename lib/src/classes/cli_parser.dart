@@ -6,6 +6,10 @@ import 'package:path/path.dart' as path;
 import 'package:meta/meta.dart';
 import 'package:prompts/prompts.dart' as prompts;
 
+///
+/// CliStream Model Class
+///
+
 class CliStream {
   String sourceDirPath;
   String destinationDirPath;
@@ -18,15 +22,20 @@ class CliStream {
   });
 }
 
+///
+/// CliParser Class
+/// Accepts inputs from the CLI prompt, processes them and returns the inputted data.
+///
+
 class CliParser {
   final String cwd;
   final String destPath;
-  final String setupConfigFile;
+  final String setupConfigFilePath;
 
   CliParser({
     @required this.cwd,
     @required this.destPath,
-    @required this.setupConfigFile,
+    @required this.setupConfigFilePath,
   });
 
   Future<CliStream> getCliStream() async {
@@ -38,15 +47,15 @@ class CliParser {
       throw 'Source directory does not exist.';
     }
 
-    final setupFile = await File(path.join(sourceDir, setupConfigFile));
-    if (!setupFile.existsSync()) {
-      throw '${setupConfigFile} was not found inside the source directory.';
+    final setupFilePath = await File(path.join(sourceDir, setupConfigFilePath));
+    if (!setupFilePath.existsSync()) {
+      throw '${setupConfigFilePath} was not found inside the source directory.';
     }
 
-    final setupJson = jsonDecode(setupFile.readAsStringSync());
+    final setupJson = jsonDecode(setupFilePath.readAsStringSync());
 
     if (setupJson['variables'] == null) {
-      throw "'variables' list not found inside ${setupConfigFile}.";
+      throw "'variables' list not found inside ${setupConfigFilePath}.";
     }
 
     final setupFileScaffoldVars = setupJson['variables'];

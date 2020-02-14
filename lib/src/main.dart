@@ -9,12 +9,12 @@ Future<void> main() async {
   final cwd = Directory.current.path;
   final destinationDirPath = path.join(cwd, TEMP_DESTINATION_DIRECTORY);
   final tplExtension = TPL_FILES_EXTENSION;
-  final setupConfigFile = SETUP_CONFIG_FILE;
+  final setupConfigFilePath = SETUP_CONFIG_FILE;
 
   final cli = CliParser(
     cwd: cwd,
     destPath: destinationDirPath,
-    setupConfigFile: setupConfigFile,
+    setupConfigFilePath: setupConfigFilePath,
   );
 
   final cliStream = await cli.getCliStream();
@@ -24,7 +24,7 @@ Future<void> main() async {
     destinationDirPath: cliStream.destinationDirPath,
     scaffoldVariables: cliStream.scaffoldVariables,
     tplExtension: tplExtension,
-    setupConfigFile: setupConfigFile,
+    setupConfigFilePath: setupConfigFilePath,
   );
 
   generator.init();

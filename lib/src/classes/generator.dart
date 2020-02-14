@@ -4,13 +4,17 @@ import 'package:path/path.dart' as path;
 import 'package:mustache/mustache.dart';
 import 'package:meta/meta.dart';
 
+///
+/// Generator Class
+/// Copy files and process template files to final output
+///
+
 class Generator {
   final String sourceDirPath;
   final String destinationDirPath;
   final Map<String, String> scaffoldVariables;
   final String tplExtension;
-  final String setupConfigFile;
-
+  final String setupConfigFilePath;
   final List<String> filesSkipList = [];
 
   Generator({
@@ -18,15 +22,16 @@ class Generator {
     @required this.destinationDirPath,
     @required this.scaffoldVariables,
     @required this.tplExtension,
-    @required this.setupConfigFile,
+    @required this.setupConfigFilePath,
   }) {
-    filesSkipList.add(setupConfigFile);
+    filesSkipList.add(setupConfigFilePath);
   }
 
   void init() {
     final _sourceDirPath = Directory(sourceDirPath);
     final _destinationDirPath = Directory(destinationDirPath);
 
+    /// create the destination dir if not found
     if (!_destinationDirPath.existsSync()) {
       _destinationDirPath.createSync(recursive: true);
     }
@@ -37,15 +42,17 @@ class Generator {
     );
   }
 
+  /// Recursively copy files from source to destination folder
+
   void copyTemplatifiedDirectory(
     Directory source,
     Directory destination,
   ) {
     source.listSync(recursive: false).forEach((final sourceEntity) {
       // prevent recursive creation of the destination dir
-      // prevent setupConfigFile from writing to the destination
+      // prevent setupConfigFilePath from writing to the destination
       if (sourceEntity.absolute.path != destination.absolute.path &&
-          path.join(sourceDirPath, setupConfigFile) != sourceEntity.path) {
+          path.join(sourceDirPath, setupConfigFilePath) != sourceEntity.path) {
         if (sourceEntity is Directory) {
           final destinationPath = getTemplateStrippedPath(
             destination.absolute.path,
@@ -68,7 +75,9 @@ class Generator {
             sourceEntity.absolute,
             newDirectory,
           );
-        } else if (sourceEntity is File) {
+        }
+        /// File copying logic
+        else if (sourceEntity is File) {
           final destinationPath = getTemplateStrippedPath(
             destination.path,
             scaffoldVariables,
@@ -97,6 +106,7 @@ class Generator {
     });
   }
 
+  /// Replace scaffold variables with values from cli prompt
   void processTemplateFiles(String filePath) {
     final fileContents = File(filePath).readAsStringSync();
 
