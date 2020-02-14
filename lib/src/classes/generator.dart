@@ -42,7 +42,9 @@ class Generator {
   ) {
     source.listSync(recursive: false).forEach((final sourceEntity) {
       // prevent recursive creation of the destination dir
-      if (sourceEntity.absolute.path != destination.absolute.path) {
+      // prevent setupConfigFile from writing to the destination
+      if (sourceEntity.absolute.path != destination.absolute.path &&
+          path.join(sourceDirPath, setupConfigFile) != sourceEntity.path) {
         if (sourceEntity is Directory) {
           final destinationPath = getTemplatifiedDirectoryPath(
             destination.absolute.path,

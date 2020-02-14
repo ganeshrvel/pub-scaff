@@ -11,7 +11,7 @@ Future<void> main() async {
   // @todo check if source directory exists
 
   final cwd = Directory.current.path;
-  final destinationDirPath = path.join(cwd, '__components__');
+  final destinationDirPath = path.join(cwd, '__component__');
   final tplExtension = TPL_FILES_EXTENSION;
   final setupConfigFile = SETUP_CONFIG_FILE;
 
@@ -22,10 +22,6 @@ Future<void> main() async {
   );
 
   final cliStream = await cli.getCliStream();
-
-  print(cliStream.sourceDirPath);
-  print(cliStream.destinationDirPath);
-  print(cliStream.scaffoldVariables);
 
   final generator = Generator(
     sourceDirPath: cliStream.sourceDirPath,
