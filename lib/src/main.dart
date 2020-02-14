@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:path/path.dart' as path;
-import 'package:dart_scaffold/src/classes/cli_parser.dart';
-import 'package:dart_scaffold/src/classes/generator.dart';
-import 'package:dart_scaffold/src/constants.dart';
+import 'package:scaff/src/classes/cli_parser.dart';
+import 'package:scaff/src/classes/generator.dart';
+import 'package:scaff/src/constants.dart';
 
 Future<void> main() async {
   final cwd = Directory.current.path;

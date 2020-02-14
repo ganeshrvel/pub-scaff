@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:dart_scaffold/src/utils/helpers.dart';
+import 'package:scaff/src/utils/helpers.dart';
 import 'package:path/path.dart' as path;
 import 'package:mustache/mustache.dart';
 import 'package:meta/meta.dart';
