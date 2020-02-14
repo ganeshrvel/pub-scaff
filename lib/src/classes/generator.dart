@@ -24,6 +24,7 @@ class Generator {
   }
 
   void init() {
+    final _sourceDirPath = Directory(sourceDirPath);
     final _destinationDirPath = Directory(destinationDirPath);
 
     if (!_destinationDirPath.existsSync()) {
@@ -31,7 +32,7 @@ class Generator {
     }
 
     copyTemplatifiedDirectory(
-      Directory(sourceDirPath),
+      _sourceDirPath,
       _destinationDirPath,
     );
   }

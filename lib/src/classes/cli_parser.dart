@@ -31,8 +31,12 @@ class CliParser {
 
   Future<CliStream> getCliStream() async {
     var sourceDir = prompts.get('Enter source directory', defaultsTo: cwd);
-    var destinationDirPath =
+    var destinationDir =
         prompts.get('Enter destination directory', defaultsTo: destPath);
+
+    if (!Directory(sourceDir).existsSync()) {
+      throw 'Source directory does not exist.';
+    }
 
     final setupFile = await File(path.join(sourceDir, setupConfigFile));
     if (!setupFile.existsSync()) {
@@ -42,7 +46,7 @@ class CliParser {
     final setupJson = jsonDecode(setupFile.readAsStringSync());
 
     if (setupJson['variables'] == null) {
-      throw "'variables' list not found inside ${setupConfigFile}";
+      throw "'variables' list not found inside ${setupConfigFile}.";
     }
 
     final setupFileScaffoldVars = setupJson['variables'];
@@ -57,7 +61,7 @@ class CliParser {
 
     return CliStream(
       sourceDirPath: sourceDir,
-      destinationDirPath: destinationDirPath,
+      destinationDirPath: destinationDir,
       scaffoldVariables: scaffoldVarMap,
     );
   }
