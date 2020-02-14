@@ -10,7 +10,10 @@ class Generator {
   final Map<String, String> scaffoldVariables;
   final String tplExtension;
 
-  Generator({
+  final List<String> filesSkipList;
+
+  Generator(
+    this.filesSkipList, {
     @required this.sourceDirPath,
     @required this.destinationDirPath,
     @required this.scaffoldVariables,
@@ -18,9 +21,16 @@ class Generator {
   });
 
   void init() {
+    final _destinationDirPath = Directory(destinationDirPath);
+
+    /*if (!_destinationDirPath.existsSync()) {
+      print("aaaaaa");
+     // _destinationDirPath.createSync();
+    }*/
+
     copyTemplatifiedDirectory(
       Directory(sourceDirPath),
-      Directory(destinationDirPath),
+      _destinationDirPath,
     );
   }
 
@@ -30,20 +40,20 @@ class Generator {
   ) {
     source.listSync(recursive: false).forEach((var sourceEntity) {
       if (sourceEntity is Directory) {
-        var destinationPath = getTemplatifiedDirectoryPath(
+        final destinationPath = getTemplatifiedDirectoryPath(
           destination.absolute.path,
           scaffoldVariables,
         );
-        var sourceEntityPath = getTemplatifiedDirectoryPath(
+        final sourceEntityPath = getTemplatifiedDirectoryPath(
           sourceEntity.path,
           scaffoldVariables,
         );
-        var filePath = path.join(
+        final filePath = path.join(
           destinationPath,
           path.basename(sourceEntityPath),
         );
 
-        var newDirectory = Directory(filePath);
+        final newDirectory = Directory(filePath);
 
         newDirectory.createSync();
 
@@ -52,15 +62,15 @@ class Generator {
           newDirectory,
         );
       } else if (sourceEntity is File) {
-        var destinationPath = getTemplatifiedDirectoryPath(
+        final destinationPath = getTemplatifiedDirectoryPath(
           destination.path,
           scaffoldVariables,
         );
-        var sourceEntityPath = getTemplatifiedDirectoryPath(
+        final sourceEntityPath = getTemplatifiedDirectoryPath(
           sourceEntity.path,
           scaffoldVariables,
         );
-        var filePath =
+        final filePath =
             path.join(destinationPath, path.basename(sourceEntityPath));
 
         sourceEntity.copySync(filePath);
@@ -71,11 +81,11 @@ class Generator {
   }
 
   void processTemplateFiles(String filePath) {
-    var fileContents = File(filePath).readAsStringSync();
+    final fileContents = File(filePath).readAsStringSync();
 
-    var template = Template(fileContents);
+    final template = Template(fileContents);
 
-    var output = template.renderString(scaffoldVariables);
+    final output = template.renderString(scaffoldVariables);
 
     try {
       File(filePath).writeAsStringSync(output);

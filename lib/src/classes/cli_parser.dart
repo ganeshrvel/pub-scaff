@@ -1,34 +1,66 @@
+import 'dart:collection';
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:path/path.dart' as path;
 import 'package:io/ansi.dart';
 import 'package:meta/meta.dart';
 import 'package:prompts/prompts.dart' as prompts;
 
+import '../constants.dart';
+
 class CliStream {
-  String sourceDir;
+  String sourceDirPath;
   String destinationDirPath;
+  HashMap<String, String> scaffoldVariables;
 
   CliStream({
-    @required this.sourceDir,
+    @required this.sourceDirPath,
     @required this.destinationDirPath,
+    @required this.scaffoldVariables,
   });
 }
 
 class CliParser {
-  final cwd;
-  final destinationDirPath;
+  final String cwd;
+  final String destPath;
 
   CliParser({
     @required this.cwd,
-    @required this.destinationDirPath,
+    @required this.destPath,
   });
 
-  CliStream getCliStream() {
+  Future<CliStream> getCliStream() async {
     var sourceDir = prompts.get('Enter source directory', defaultsTo: cwd);
-    var destinationDirPath = prompts.get('Enter destination directory',
-        defaultsTo: this.destinationDirPath);
+    var destinationDirPath =
+        prompts.get('Enter destination directory', defaultsTo: this.destPath);
+
+    final setupFile =
+        await File(path.join(cwd /*sourceDir*/, SETUP_CONFIG_FILE));
+    if (!setupFile.existsSync()) {
+      throw '${SETUP_CONFIG_FILE} was not found inside the source directory.';
+    }
+
+    final setupJson = jsonDecode(setupFile.readAsStringSync());
+
+    if (setupJson['variables'] == null) {
+      throw "'variables' list not found inside ${SETUP_CONFIG_FILE}";
+    }
+
+    final setupFileScaffoldVars = setupJson['variables'];
+
+    final scaffoldVarMap = HashMap<String, String>();
+
+    for (final e in setupFileScaffoldVars) {
+      final varValue = prompts.get('Enter ${e} variable value');
+
+      scaffoldVarMap.putIfAbsent(e, () => varValue);
+    }
 
     return CliStream(
-      sourceDir: sourceDir,
+      sourceDirPath: sourceDir,
       destinationDirPath: destinationDirPath,
+      scaffoldVariables: scaffoldVarMap,
     );
   }
 }

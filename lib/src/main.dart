@@ -1,32 +1,36 @@
-import 'package:dart_scaffold/src/classes/cli_parser.dart';
-import 'package:dart_scaffold/src/classes/generator.dart';
-import 'package:path/path.dart' as path;
+import 'dart:convert';
 import 'dart:io';
 
-void main() {
+import 'package:path/path.dart' as path;
+import 'package:dart_scaffold/src/classes/cli_parser.dart';
+import 'package:dart_scaffold/src/classes/generator.dart';
+import 'package:dart_scaffold/src/constants.dart';
+
+Future<void> main() async {
+  // @todo rename files to dart
+  // @todo check if source directory exists
+
   final cwd = Directory.current.path;
   final destinationDirPath = path.join(cwd, '__components__');
-
-  final sourceDirPath = path.join(cwd, 'mocks');
-  final _destinationDirPath = path.join(cwd, 'temp');
-  final scaffoldVariables = {'page': 'Demo', 'title': 'AppDemo'};
-  final tplExtension = 'tpl';
+  final tplExtension = TPL_FILES_EXTENSION;
 
   final cli = CliParser(
     cwd: cwd,
-    destinationDirPath: destinationDirPath,
+    destPath: destinationDirPath,
   );
-  var cliStream = cli.getCliStream();
 
-  print(cliStream.sourceDir);
+  final cliStream = await cli.getCliStream();
+
+  print(cliStream.sourceDirPath);
   print(cliStream.destinationDirPath);
+  print(cliStream.scaffoldVariables);
 
-  /*final generator = Generator(
-    cwd: sourceDirPath,
-    destinationDirPath: destinationDirPath,
-    scaffoldVariables: scaffoldVariables,
+  final generator = Generator(
+    sourceDirPath: cliStream.sourceDirPath,
+    destinationDirPath: cliStream.destinationDirPath,
+    scaffoldVariables: cliStream.scaffoldVariables,
     tplExtension: tplExtension,
   );
 
-  generator.init();*/
+  generator.init();
 }
