@@ -5,9 +5,9 @@ String getTemplateStrippedPath(
   var _path = path;
 
   scaffoldVariables.forEach((key, value) {
-    if (path.contains('{{${key}}}')) {
+    if (path.contains('{{$key}}')) {
       _path = _path.replaceAll(
-        '{{${key}}}',
+        '{{$key}}',
         value,
       );
     }
