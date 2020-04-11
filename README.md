@@ -8,7 +8,7 @@ It is a very tedious job to keep replicating the boilerplate codes every time yo
 **scaff** uses 'Mustache templating library' variable schemes for defining and processing the template files.
 
 
-## Installation
+## Installation/Upgrade
 
 ```shell
 $ pub global activate scaff
@@ -22,8 +22,7 @@ $ pub global run scaff
 ## Example
 Let us create a simple component. First of all, we need to create a working directory and it should contain a scaff.setup.json file. The scaff.setup.json file should contain all the template variables used in the working directory.
 The component subdirectories and files should be included inside the working directory. 
-
-All template files should have a .tpl extension and scaff will convert them into .dart files. The files and directories name may contain template variables as well.
+The files and directories name may contain template variables as well.
 
 Template variable examples: {{var1}}, {{className}}Base, {{fileName}}_store
 
@@ -33,8 +32,8 @@ component_templates
 │   └── general_store_architecture
 │       ├── scaff.setup.json
 │       └── {{componentName}}
-│           ├── {{componentName}}.tpl
-│           └── {{componentName}}_store.tpl
+│           ├── {{componentName}}.dart
+│           └── {{componentName}}_store.dart
 ```
 
 1) Create a new directory in the project root
@@ -54,10 +53,10 @@ $ cd {{componentName}}
 3) Create the component template file
 
 ```shell
-$ touch {{componentName}}.tpl
+$ touch {{componentName}}.dart
 ```
 
-4) Add the code to {{componentName}}.tpl file
+4) Add the code to {{componentName}}.dart file
 
 ```dart
 import 'package:flutter/material.dart';
@@ -86,10 +85,10 @@ class {{className}}Screen extends StatelessWidget {
 5) Create the store template file
 
 ```shell
-$ touch {{componentName}}_store.tpl
+$ touch {{componentName}}_store.dart
 ```
 
-6) Add the code to {{componentName}}_store.tpl file
+6) Add the code to {{componentName}}_store.dart file
 
 ```dart
 import 'package:mobx/mobx.dart';
@@ -129,10 +128,11 @@ $ pub global run scaff
 
 11) You will be prompted to:
 ```shell
-- Enter source directory (/path/component_templates/general_store_architecture) »
-- Enter destination directory (/path/component_templates/general_store_architecture/__component__) »
-- Enter 'componentName' variable value » login
-- Enter 'className' variable value » Login
+Enter source directory (/path/component_templates/general_store_architecture) »
+Enter destination directory (/path/component_templates/general_store_architecture/__component__) »
+Enter template extension (dart) » 
+Enter 'componentName' variable value » login
+Enter 'className' variable value » Login
 ```
 
 12) The destination directory will have the newly generated component.

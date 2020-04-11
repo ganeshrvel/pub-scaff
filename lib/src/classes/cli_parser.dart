@@ -76,14 +76,14 @@ class CliParser {
       throw "'variables' list not found inside $setupConfigFilePath.";
     }
 
-    final setupFileScaffoldVars = setupJson['variables'] as List<String>;
+    final setupFileScaffoldVars = setupJson['variables'] as List<dynamic>;
 
     final scaffoldVarMap = HashMap<String, String>();
 
     for (final e in setupFileScaffoldVars) {
       final varValue = prompts.get("Enter '$e' variable value");
 
-      scaffoldVarMap.putIfAbsent(e, () => varValue);
+      scaffoldVarMap.putIfAbsent(e as String, () => varValue);
     }
 
     return CliStream(

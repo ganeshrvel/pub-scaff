@@ -1,4 +1,4 @@
-## 1.1.0
+## 1.1.2
 
 - Changes default template extension to 'dart'
 - New template extension prompt
