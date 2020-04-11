@@ -8,7 +8,6 @@ import 'package:meta/meta.dart';
 /// Generator Class
 /// Copy files and process template files to final output
 ///
-
 class Generator {
   final String sourceDirPath;
   final String destinationDirPath;
@@ -21,8 +20,8 @@ class Generator {
     @required this.sourceDirPath,
     @required this.destinationDirPath,
     @required this.scaffoldVariables,
-    @required this.tplExtension,
     @required this.setupConfigFilePath,
+    @required this.tplExtension,
   }) {
     filesSkipList.add(setupConfigFilePath);
   }
@@ -43,7 +42,6 @@ class Generator {
   }
 
   /// Recursively copy files from source to destination folder
-
   void copyTemplatifiedDirectory(
     Directory source,
     Directory destination,
@@ -88,7 +86,7 @@ class Generator {
             scaffoldVariables,
           );
 
-          var isTplFile = isFileExtensionMatch(
+          final isTplFile = isFileExtensionMatch(
             path.basename(sourceEntityPath),
             tplExtension,
           );

@@ -15,6 +15,7 @@ Future<void> main() async {
     cwd: cwd,
     destPath: destinationDirPath,
     setupConfigFilePath: setupConfigFilePath,
+    tplExt: tplExtension,
   );
 
   final cliStream = await cli.getCliStream();
@@ -23,7 +24,7 @@ Future<void> main() async {
     sourceDirPath: cliStream.sourceDirPath,
     destinationDirPath: cliStream.destinationDirPath,
     scaffoldVariables: cliStream.scaffoldVariables,
-    tplExtension: tplExtension,
+    tplExtension: cliStream.tplExtension,
     setupConfigFilePath: setupConfigFilePath,
   );
 

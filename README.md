@@ -3,9 +3,9 @@
 ##### Scaffold Generator for Dart and Flutter.
 
 **scaff** is a simple command-line utility for generating Dart and Flutter components from template files.
-It is a very tedious job to keep replicating the boilerplate codes every time you try to add a new component in your app. Using scaff, you can generate dart or flutter components from the custom-defined templates. You can even add template schemes to the component directories and files for easy and flexible scaffolding.
+It is a very tedious job to keep replicating the boilerplate codes every time you try to add a new component in your app. Using scaff, you can generate dart or flutter components from the custom-defined templates. You can even include template variables in the component files and directories name for easy and flexible scaffolding.
 
-**scaff** uses 'Mustache templating library' for defining and processing the template files.
+**scaff** uses 'Mustache templating library' variable schemes for defining and processing the template files.
 
 
 ## Installation
@@ -20,10 +20,10 @@ $ pub global run scaff
 ```
 
 ## Example
-Let us create a simple component. First of all, we need to create a working directory and it should contain a scaff.setup.json file. The scaff.setup.json file should contain all the template variables used in that working directory.
-Add the other subdirectories and template files into the working directory. 
+Let us create a simple component. First of all, we need to create a working directory and it should contain a scaff.setup.json file. The scaff.setup.json file should contain all the template variables used in the working directory.
+The component subdirectories and files should be included inside the working directory. 
 
-All template files should have a .tpl extension. The files and directories name may contain template variables as well.
+All template files should have a .tpl extension and scaff will convert them into .dart files. The files and directories name may contain template variables as well.
 
 Template variable examples: {{var1}}, {{className}}Base, {{fileName}}_store
 
@@ -40,7 +40,7 @@ component_templates
 1) Create a new directory in the project root
 
 ```shell
-$ mkdir -p component_templates
+$ mkdir -p component_templates/general_store_architecture
 $ cd component_templates/general_store_architecture
 ```
 
