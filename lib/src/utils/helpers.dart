@@ -24,11 +24,8 @@ bool isFileExtensionMatch(String fileName, String extension) {
 
 String replaceExtension(String fileName, String searchExt, String replaceExt) {
   final _fileName = fileName.split('.');
-  var newFileName = fileName;
 
   _fileName.removeAt(_fileName.length - 1);
 
-  newFileName = '${_fileName.join(".")}.${replaceExt}';
-
-  return newFileName;
+  return '${_fileName.join(".")}.$replaceExt';
 }
