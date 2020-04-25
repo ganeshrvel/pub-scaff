@@ -40,6 +40,9 @@ class CliParser {
     @required this.tplExt,
   });
 
+  ///
+  /// getTemplateExtension
+  ///
   String getTemplateExtension(String tplExtension) {
     final _tplSplitList = tplExtension.split('.');
 
@@ -50,6 +53,9 @@ class CliParser {
     return _tplSplitList.join('.');
   }
 
+  ///
+  /// getCliStream
+  ///
   Future<CliStream> getCliStream() async {
     final sourceDir = prompts.get('Enter source directory', defaultsTo: cwd);
     final destinationDir =

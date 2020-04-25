@@ -5,6 +5,7 @@ import 'package:scaff/src/classes/cli_parser.dart';
 import 'package:scaff/src/classes/generator.dart';
 import 'package:scaff/src/constants.dart';
 
+/// Main function
 Future<void> main() async {
   final cwd = Directory.current.path;
   final destinationDirPath = path.join(cwd, TEMP_DESTINATION_DIRECTORY);

@@ -26,6 +26,9 @@ class Generator {
     filesSkipList.add(setupConfigFilePath);
   }
 
+  ///
+  /// init
+  ///
   void init() {
     final _sourceDirPath = Directory(sourceDirPath);
     final _destinationDirPath = Directory(destinationDirPath);
