@@ -31,7 +31,12 @@ class Generator {
     final _sourceDirPath = Directory(sourceDirPath);
     final _destinationDirPath = Directory(destinationDirPath);
 
-    // create the destination dir if not found
+    // remove the destination dir if exists
+    if (_destinationDirPath.existsSync()) {
+      _destinationDirPath.deleteSync(recursive: true);
+    }
+
+    // create the destination dir
     if (!_destinationDirPath.existsSync()) {
       _destinationDirPath.createSync(recursive: true);
     }

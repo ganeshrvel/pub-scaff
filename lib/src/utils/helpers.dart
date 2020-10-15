@@ -1,4 +1,4 @@
-// getTemplateStrippedPath]
+// Get template stripped path
 String getTemplateStrippedPath(
   String path,
   Map<String, String> scaffoldVariables,
@@ -17,14 +17,14 @@ String getTemplateStrippedPath(
   return _path;
 }
 
-// isFileExtensionMatch
+// Is file extension match
 bool isFileExtensionMatch(String fileName, String extension) {
   final _fileName = fileName.split('.');
 
   return _fileName.last == extension;
 }
 
-// replaceExtension
+// Replace Extension
 String replaceExtension(String fileName, String searchExt, String replaceExt) {
   final _fileName = fileName.split('.');
 

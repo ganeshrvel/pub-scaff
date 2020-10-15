@@ -1,3 +1,7 @@
+## 1.2.0+2
+
+- The destination path will be deleted if exists
+
 ## 1.2.0+1
 
 - Disabled the escaping of html values
