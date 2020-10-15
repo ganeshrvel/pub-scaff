@@ -4,10 +4,8 @@ import 'package:path/path.dart' as path;
 import 'package:mustache/mustache.dart';
 import 'package:meta/meta.dart';
 
-///
 /// Generator Class
 /// Copy files and process template files to final output
-///
 class Generator {
   final String sourceDirPath;
   final String destinationDirPath;
@@ -27,13 +25,13 @@ class Generator {
   }
 
   ///
-  /// init
+  /// Init
   ///
   void init() {
     final _sourceDirPath = Directory(sourceDirPath);
     final _destinationDirPath = Directory(destinationDirPath);
 
-    /// create the destination dir if not found
+    // create the destination dir if not found
     if (!_destinationDirPath.existsSync()) {
       _destinationDirPath.createSync(recursive: true);
     }

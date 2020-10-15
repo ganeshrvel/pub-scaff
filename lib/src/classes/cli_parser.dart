@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 
@@ -6,13 +5,11 @@ import 'package:path/path.dart' as path;
 import 'package:meta/meta.dart';
 import 'package:prompts/prompts.dart' as prompts;
 
-///
 /// CliStream Model Class
-///
 class CliStream {
   final String sourceDirPath;
   final String destinationDirPath;
-  final HashMap<String, String> scaffoldVariables;
+  final Map<String, String> scaffoldVariables;
   final String tplExtension;
 
   CliStream({
@@ -23,10 +20,8 @@ class CliStream {
   });
 }
 
-///
 /// CliParser Class
 /// Accepts inputs from the CLI prompt, processes them and returns the inputted data.
-///
 class CliParser {
   final String cwd;
   final String destPath;
@@ -40,9 +35,7 @@ class CliParser {
     @required this.tplExt,
   });
 
-  ///
-  /// getTemplateExtension
-  ///
+  /// Find the template extension
   String getTemplateExtension(String tplExtension) {
     final _tplSplitList = tplExtension.split('.');
 
@@ -53,9 +46,7 @@ class CliParser {
     return _tplSplitList.join('.');
   }
 
-  ///
-  /// getCliStream
-  ///
+  /// Get the CLI stream
   Future<CliStream> getCliStream() async {
     final sourceDir = prompts.get('Enter source directory', defaultsTo: cwd);
     final destinationDir =
@@ -77,25 +68,37 @@ class CliParser {
       throw 'Invalid template extension';
     }
 
-    final setupJson = jsonDecode(setupFilePath.readAsStringSync());
-    if (setupJson['variables'] == null) {
-      throw "'variables' list not found inside $setupConfigFilePath.";
+    final _setupJson = jsonDecode(setupFilePath.readAsStringSync());
+    final _setupJsonVariables = _setupJson['variables'] as List<dynamic>;
+    final _setupJsonMappedVariables =
+        _setupJson['mappedVariables'] as Map<dynamic, dynamic>;
+
+    if (_setupJsonVariables == null && _setupJsonMappedVariables == null) {
+      throw "either 'variables' or 'mappedVariables' should be available inside the $setupConfigFilePath file.";
     }
 
-    final setupFileScaffoldVars = setupJson['variables'] as List<dynamic>;
+    final _scaffoldVariables = List<String>.from(_setupJsonVariables ?? []);
+    final _scaffoldMappedVariables =
+        Map<String, String>.from(_setupJsonMappedVariables ?? {});
 
-    final scaffoldVarMap = HashMap<String, String>();
+    final _scaffoldVarMap = <String, String>{
+      ..._scaffoldMappedVariables ?? {},
+    };
 
-    for (final e in setupFileScaffoldVars) {
+    for (final e in _scaffoldVariables) {
+      if (_scaffoldVarMap.containsKey(e)) {
+        continue;
+      }
+
       final varValue = prompts.get("Enter '$e' variable value");
 
-      scaffoldVarMap.putIfAbsent(e as String, () => varValue);
+      _scaffoldVarMap.putIfAbsent(e, () => varValue);
     }
 
     return CliStream(
       sourceDirPath: sourceDir,
       destinationDirPath: destinationDir,
-      scaffoldVariables: scaffoldVarMap,
+      scaffoldVariables: _scaffoldVarMap,
       tplExtension: getTemplateExtension(tplExtension),
     );
   }

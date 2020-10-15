@@ -110,9 +110,20 @@ $ touch scaff.setup.json
 
 ```json
 {
-  "variables": ["componentName", "className"]
+  "variables": [
+	"componentName",
+	"className"
+  ],
+  "mappedVariables": {
+	"componentName": "login",
+	"className": "LoginScreen"
+  }
 }
 ```
+
+- `variables` holds a list of template variables. The CLI will prompt for the user input.
+- `mappedVariables` holds the values for the template variables. The generator will pick values from the `mappedVariables` automatically, if required.
+- You may use either of the one or in combination. CLI will skip the prompt if the value for a template variable is already available inside the `mappedVariables`.
 
 9) cd into general_store_architecture folder.
 

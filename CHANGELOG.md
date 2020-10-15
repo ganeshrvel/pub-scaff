@@ -1,4 +1,8 @@
-## 1.1.3
+## 1.2.0
+
+- Added the support for `mappedVariables` in scaff.setup.json file
+
+## 1.1.3+1
 
 - Changes default template extension to 'dart'
 - New template extension prompt

@@ -1,3 +1,10 @@
 {
-	"variables": ["componentName", "className"]
+  "variables": [
+	"componentName",
+	"className"
+  ],
+  "mappedVariables": {
+	"component_name": "login",
+	"ComponentNameCapitalized": "LoginScreen"
+  }
 }
