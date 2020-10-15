@@ -119,7 +119,7 @@ class Generator {
   void processTemplateFiles(String filePath) {
     final fileContents = File(filePath).readAsStringSync();
 
-    final template = Template(fileContents);
+    final template = Template(fileContents, htmlEscapeValues: false);
 
     final output = template.renderString(scaffoldVariables);
 
