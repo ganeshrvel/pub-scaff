@@ -9,8 +9,8 @@ import 'package:scaff/src/constants.dart';
 Future<void> main() async {
   final cwd = Directory.current.path;
   final destinationDirPath = path.join(cwd, TEMP_DESTINATION_DIRECTORY);
-  final tplExtension = TPL_FILES_EXTENSION;
-  final setupConfigFilePath = SETUP_CONFIG_FILE;
+  const tplExtension = TPL_FILES_EXTENSION;
+  const setupConfigFilePath = SETUP_CONFIG_FILE;
 
   final cli = CliParser(
     cwd: cwd,

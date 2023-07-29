@@ -11,12 +11,12 @@ It is a very tedious job to keep replicating the boilerplate codes every time yo
 ## Installation/Upgrade
 
 ```shell
-$ pub global activate scaff
+$ dart pub global activate scaff
 ```
 
 ## Usage
 ```shell
-$ pub global run scaff
+$ dart pub global run scaff
 ```
 
 ## Example
@@ -134,7 +134,7 @@ $ pwd # it should be pointing to =>  /path/component_templates/general_store_arc
 10) Run scaff globally
 
 ```shell
-$ pub global run scaff
+$ dart pub global run scaff
 ```
 
 11) You will be prompted to:
@@ -153,6 +153,13 @@ The destination directory structure:
 └── login
     ├── login.dart
     └── login_store.dart
+```
+
+
+- Development and debugging
+```shell
+dart pub global activate --source path /path/to/scaff
+dart pub global run scaff
 ```
 
 ### Buy me a coffee

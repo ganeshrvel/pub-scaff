@@ -1,8 +1,8 @@
 import 'dart:io';
-import 'package:scaff/src/utils/helpers.dart';
+
+import 'package:mustache_template/mustache.dart';
 import 'package:path/path.dart' as path;
-import 'package:mustache/mustache.dart';
-import 'package:meta/meta.dart';
+import 'package:scaff/src/utils/helpers.dart';
 
 /// Generator Class
 /// Copy files and process template files to final output
@@ -15,11 +15,11 @@ class Generator {
   final List<String> filesSkipList = ['.DS_Store'];
 
   Generator({
-    @required this.sourceDirPath,
-    @required this.destinationDirPath,
-    @required this.scaffoldVariables,
-    @required this.setupConfigFilePath,
-    @required this.tplExtension,
+    required this.sourceDirPath,
+    required this.destinationDirPath,
+    required this.scaffoldVariables,
+    required this.setupConfigFilePath,
+    required this.tplExtension,
   }) {
     filesSkipList.add(setupConfigFilePath);
   }
@@ -52,7 +52,9 @@ class Generator {
     Directory source,
     Directory destination,
   ) {
-    source.listSync(recursive: false).forEach((final sourceEntity) {
+    source.listSync(recursive: false).forEach((
+      sourceEntity,
+    ) {
       // prevent recursive creation of the destination dir
       // prevent setupConfigFilePath from writing to the destination
       if (sourceEntity.absolute.path != destination.absolute.path &&
