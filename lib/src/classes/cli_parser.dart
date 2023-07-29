@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:path/path.dart' as path;
-import 'package:meta/meta.dart';
 import 'package:prompts/prompts.dart' as prompts;
+import 'package:scaff/src/utils/functs.dart';
 
 /// CliStream Model Class
 class CliStream {
@@ -13,10 +13,10 @@ class CliStream {
   final String tplExtension;
 
   CliStream({
-    @required this.sourceDirPath,
-    @required this.destinationDirPath,
-    @required this.scaffoldVariables,
-    @required this.tplExtension,
+    required this.sourceDirPath,
+    required this.destinationDirPath,
+    required this.scaffoldVariables,
+    required this.tplExtension,
   });
 }
 
@@ -29,10 +29,10 @@ class CliParser {
   final String tplExt;
 
   CliParser({
-    @required this.cwd,
-    @required this.destPath,
-    @required this.setupConfigFilePath,
-    @required this.tplExt,
+    required this.cwd,
+    required this.destPath,
+    required this.setupConfigFilePath,
+    required this.tplExt,
   });
 
   /// Find the template extension
@@ -64,26 +64,29 @@ class CliParser {
     final tplExtension =
         prompts.get('Enter template extension', defaultsTo: tplExt);
 
-    if (tplExtension == null || tplExtension.isEmpty) {
+    if (isNullOrEmpty(tplExtension)) {
       throw 'Invalid template extension';
     }
 
     final _setupJson = jsonDecode(setupFilePath.readAsStringSync());
-    final _setupJsonVariables = _setupJson['variables'] as List<dynamic>;
-    final _setupJsonMappedVariables =
-        _setupJson['mappedVariables'] as Map<dynamic, dynamic>;
 
-    if (_setupJsonVariables == null && _setupJsonMappedVariables == null) {
+    var _setupJsonVariables = <dynamic>[];
+    if (_setupJson['variables'] != null) {
+      _setupJsonVariables = _setupJson['variables'] as List<dynamic>;
+    }
+
+    var _setupJsonMappedVariables = <dynamic, dynamic>{};
+    if (_setupJson['mappedVariables'] != null) {
+      _setupJsonMappedVariables =
+          _setupJson['mappedVariables'] as Map<dynamic, dynamic>;
+    }
+
+    if (isNull(_setupJsonVariables) && isNull(_setupJsonMappedVariables)) {
       throw "either 'variables' or 'mappedVariables' should be available inside the $setupConfigFilePath file.";
     }
 
-    final _scaffoldVariables = List<String>.from(_setupJsonVariables ?? []);
-    final _scaffoldMappedVariables =
-        Map<String, String>.from(_setupJsonMappedVariables ?? {});
-
-    final _scaffoldVarMap = <String, String>{
-      ..._scaffoldMappedVariables ?? {},
-    };
+    final _scaffoldVariables = List<String>.from(_setupJsonVariables);
+    final _scaffoldVarMap = Map<String, String>.from(_setupJsonMappedVariables);
 
     for (final e in _scaffoldVariables) {
       if (_scaffoldVarMap.containsKey(e)) {

@@ -1,3 +1,15 @@
+## 2.0.1
+
+- Fixed a casting bug
+
+- ## 2.0.0+1
+
+- Readme updated
+
+## 2.0.0
+
+- Added Null Safety: The package has been updated to fully support null safety.
+
 ## 1.2.0+2
 
 - The destination path will be deleted if exists
